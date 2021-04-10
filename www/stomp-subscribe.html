@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <script type="text/javascript" src="stomp.min.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            let subscription = null
+
+            const ws = new WebSocket('ws://localhost:15674/ws')
+            client = Stomp.over(ws)
+            client.debug = function (str) {
+                // console.log(str)
+            }
+            client.connect('test', 'test', onConnect, onStompError, '/')
+
+            function onConnect(frame) {
+                console.log('Stomp connected')
+                subscription = client.subscribe('/amq/queue/test', function (message) {
+                    // called when the client receives a STOMP message from the server
+                    if (message.body) {
+                        alert('got message with body ' + message.body)
+                    } else {
+                        alert('got empty message')
+                    }
+                })
+            }
+
+            function onStompError(frame) {
+                console.log(JSON.stringify(frame))
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <script type="text/javascript" src="stomp.min.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            let subscription = null
+
+            const ws = new WebSocket('ws://localhost:15674/ws')
+            client = Stomp.over(ws)
+            client.debug = function (str) {
+                // console.log(str)
+            }
+            client.connect('test', 'test2', onConnect, onStompError, '/')
+
+            function onConnect(frame) {
+                console.log('Stomp connected')
+            }
+
+            function onStompError(frame) {
+                console.log(JSON.stringify(frame))
+            }
+        </script>
+    </body>
+</html>
